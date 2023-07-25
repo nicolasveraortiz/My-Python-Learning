@@ -6,9 +6,9 @@ screen.title("U.S Game")
 image = "blank_states_img.gif"
 screen.addshape(image)
 
-luis = turtle.Turtle()
-luis.shape(image)
-luis.penup()
+map = turtle.Turtle()
+map.shape(image)
+map.penup()
 
 chords = []
 data = pandas.read_csv("50_states.csv")
