@@ -44,10 +44,38 @@ def add():
         is_ok = messagebox.askokcancel(title="Confirmation", message=f"These are the details entered: \nEmail: {web}"
                                                                      f"\nPassword: {password}\nAre these ok?")
         if is_ok:
-            with open("data.json", "w") as data:
-                json.dump(new_data,data,indent=3)
+            try:
+                with open("data.json", "r") as data_file:
+                    data = json.load(data_file)
+            except (FileNotFoundError, json.decoder.JSONDecodeError):
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data, data_file, indent=4)
+            else:
+                data.update(new_data)
+                with open("data.json", "w") as data_file:
+                    json.dump(data, data_file, indent=4)
+
             web_entry.delete(0, END)
             password_entry.delete(0, END)
+
+
+# ---------------------------- SEARCH ------------------------------- #
+def search():
+    try:
+        with open("data.json", "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showerror(title="Error", message="Not Data File Found")
+    except json.decoder.JSONDecodeError:
+        messagebox.showerror(title="Error", message="No info in data file")
+    else:
+        web = web_entry.get()
+        if web in data:
+            messagebox.showinfo(title="Account Data",
+                                message=f"In {web}, your user and password are:\nUsername: {data[web]['user']}"
+                                        f"\nPassword: {data[web]['password']}")
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for '{web}' exists.")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -67,18 +95,20 @@ user_label.grid(column=0, row=3)
 password_label = Label(text="Password:")
 password_label.grid(column=0, row=4)
 
-web_entry = Entry(width=35)
+web_entry = Entry(width=45)
 web_entry.grid(column=1, row=2, columnspan=2)
 web_entry.focus()
-user_entry = Entry(width=35)
+user_entry = Entry(width=45)
 user_entry.grid(column=1, row=3, columnspan=2)
 user_entry.insert(0, "clivionicolasveraortiz1@gmail.com")
-password_entry = Entry(width=21)
+password_entry = Entry(width=45)
 password_entry.grid(column=1, row=4)
 
 generate_button = Button(text="Generate Password", command=generate_password)
-generate_button.grid(column=2, row=4)
+generate_button.grid(column=3, row=4)
 add_button = Button(text="Add", command=add, width=36)
 add_button.grid(column=1, row=5, columnspan=2)
+search_button = Button(text="Search", command=search, width=14)
+search_button.grid(columnspan=2, column=3, row=2)
 
 screen.mainloop()
