@@ -61,8 +61,8 @@ else:
 #     connection.starttls()
 #     connection.login(user=my_email, password=password)
 #     random_new = r.randint(0, 2)
-#     message = f"""Subject:Tesla Stock!\n"
-#         TSLA: {up_down} {close_df_percentage}%
+#     message = f"""Subject:{COMPANY_NAME} Stock!\n"
+#         {STOCK}: {up_down} {close_df_percentage}%
 #         Headline: {all_articles[random_new]["title"]}
 #         Brief: {all_articles[random_new]["description"]}
 #         Do you wanna keep reading? Here is the source!
@@ -79,7 +79,7 @@ else:
 # message = client.messages \
 #     .create(
 #     body=f""""
-#     TSLA: {up_down}{close_df_percentage}%
+#     {STOCK}: {up_down}{close_df_percentage}%
 #     Headline: {all_articles[random_new]["title"]}
 #     Brief: {all_articles[random_new]["description"]}
 #     Do you wanna keep reading? Here is the source!
